@@ -25,21 +25,51 @@
 (defn- get-body-sync [url]
   (json/read-str (:body @(http/get url)) :key-fn keyword))
 
+(defn- get-body-async [url]
+  (let [p (promise)] 
+    (http/get url #(deliver p (json/read-str (:body %) :key-fn keyword)))
+    p))
+
 (defn get-ticker
   ([] (get-ticker default-api))
-  ([api] (get-body-sync (public-api api :ticker))))
+  ([api] (get-body-sync (public-api api :ticker)))
+  ([api async] (get-body-async (public-api api :ticker))))
 
 (defn get-trades
   ([] (get-trades default-api))
-  ([api] (get-body-sync (public-api api :trades))))
+  ([api] (get-body-sync (public-api api :trades)))
+  ([api async] (get-body-async (public-api api :trades))))
 
 (defn get-fee
   ([] (get-fee default-api))
-  ([api] (get-body-sync (public-api api :fee))))
+  ([api] (get-body-sync (public-api api :fee)))
+  ([api async] (get-body-async (public-api api :fee))))
 
 (defn get-depth
   ([] (get-depth default-api))
-  ([api] (get-body-sync (public-api api :depth))))
+  ([api] (get-body-sync (public-api api :depth)))
+  ([api async] (get-body-async (public-api api :depth))))
+
+
+;; async public apis
+
+(defn get-ticker-async
+  ([] (get-ticker-async default-api))
+  ([api] (get-body-async (public-api api :ticker))))
+
+(defn get-trades-async
+  ([] (get-trades-async default-api))
+  ([api] (get-body-async (public-api api :trades))))
+
+(defn get-fee-async
+  ([] (get-fee-async default-api))
+  ([api] (get-body-async (public-api api :fee))))
+
+(defn get-depth-async
+  ([] (get-depth-async default-api))
+  ([api] (get-body-async (public-api api :depth))))
+
+
 
 ;; This is how their api works
 
