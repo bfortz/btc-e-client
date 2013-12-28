@@ -1,6 +1,6 @@
 (ns btc-e-client.core
   "Client library for accessing the btc-e api.
-   Needs your secret and key inside environment variables called BTC_KEY and BTC_SECRET"
+  Needs your secret and key inside environment variables called BTC_KEY and BTC_SECRET"
   (:use pandect.core)
   (:require [clojure.data.json :as json]
             [org.httpkit.client :as http]
@@ -23,12 +23,13 @@
   (str "https://btc-e.com/api/2/" (name (:curr api)) "/" (name endpt)))
 
 (defn- get-body-sync [url]
-  (json/read-str (:body @(http/get url)) :key-fn keyword))
+  (json/read-str (:body @(http/get url {:timout 2000})) :key-fn keyword))
 
-(defn- get-body-async [url]
+(defn get-body-async [url]
   (let [p (promise)] 
-    (http/get url #(deliver p (json/read-str (:body %) :key-fn keyword)))
-    p))
+    (http/get url  #(deliver p (when (= (:status %) 200) 
+                                 (json/read-str (:body %) :key-fn keyword))))
+    p)) 
 
 (defn get-ticker
   ([] (get-ticker default-api))
@@ -91,9 +92,9 @@
   "Creates a post body"
   [param-map]
   (->> param-map
-    (clojure.walk/stringify-keys)
-    (reduce #(str %1 "&" (first %2) "=" (second %2)) "")
-    (#(subs % 1)))) ;; Get rid of the first "&" in "&param1=stuff"
+       (clojure.walk/stringify-keys)
+       (reduce #(str %1 "&" (first %2) "=" (second %2)) "")
+       (#(subs % 1)))) ;; Get rid of the first "&" in "&param1=stuff"
 
 (defn- btc-e-request-raw [api post-data]
   ;; add the nonce to the data
@@ -113,9 +114,9 @@
 (defn trade-api-request
   "Synchronous version to call the api request"
   ([api method-name params]
-    (json/read-str
-      (:body @(async-trade-api-request api method-name params))
-      :key-fn keyword))
+   (json/read-str
+     (:body @(async-trade-api-request api method-name params))
+     :key-fn keyword))
   ([api method-name]
    (trade-api-request api method-name {})))
 
@@ -149,6 +150,6 @@
   ;; Cancel an order with an argument
   (btce/trade-api-request api "CancelOrder" {:order_id 123})
 
-)
+  )
 
 
