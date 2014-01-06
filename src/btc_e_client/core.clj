@@ -25,10 +25,12 @@
 (defn- get-body-sync [url]
   (json/read-str (:body @(http/get url {:timout 2000})) :key-fn keyword))
 
+;(throw (Throwable. (str "Request for " url " Failed.")))
 (defn get-body-async [url]
   (let [p (promise)] 
-    (http/get url  #(deliver p (when (= (:status %) 200) 
-                                 (json/read-str (:body %) :key-fn keyword))))
+    (http/get url  #(if-let [body (:body %)]
+                      (deliver p (json/read-str body :key-fn keyword))
+                      (deliver p %))) ;; error
     p)) 
 
 (defn get-ticker
