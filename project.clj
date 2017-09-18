@@ -1,4 +1,4 @@
-(defproject io.curtis/btc-e-client "0.4.0-SNAPSHOT"
+(defproject bfortz/btc-e-client "0.4.0-SNAPSHOT"
   :description "Small btc-e / wex client library"
   :url "https://github.com/bfortz/btc-e-client"
   :license {:name "Eclipse Public License"
