@@ -22,7 +22,7 @@
   ([endpt]
    (str "https://wex.nz/api/3/" (name endpt))) 
   ([api endpt]
-   (str "https://wex.nz/api/3/" (name (:curr api)) "/" (name endpt))))
+   (str "https://wex.nz/api/3/" (name endpt) "/" (name (:curr api)))))
 
 (defn- get-body-sync [url]
   (json/read-str (:body @(http/get url {:timeout 2000})) :key-fn keyword))
