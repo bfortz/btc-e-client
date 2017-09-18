@@ -1,6 +1,6 @@
-(defproject io.curtis/btc-e-client "0.4.0"
+(defproject io.curtis/btc-e-client "0.4.0-SNAPSHOT"
   :description "Small btc-e / wex client library"
-  :url "https://github.com/MarcoPolo/btc-e-client"
+  :url "https://github.com/bfortz/btc-e-client"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
