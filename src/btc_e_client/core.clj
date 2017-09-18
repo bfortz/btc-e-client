@@ -1,10 +1,10 @@
 (ns btc-e-client.core
   "Client library for accessing the wex (formerly btc-e) api.
   Needs your secret and key inside environment variables called BTC_KEY and BTC_SECRET"
-  (:use pandect.core)
+  (:use pandect.algo.sha512)
   (:require [clojure.data.json :as json]
             [org.httpkit.client :as http]
-            clojure.walk))
+            [clojure.walk]))
 
 (defn init
   "Initiates an api structure which can be used to interact with the api.
