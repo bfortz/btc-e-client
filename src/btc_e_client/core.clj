@@ -19,11 +19,13 @@
 (def endpoint "https://wex.nz/tapi")
 
 (defn- public-api
-  [api endpt]
-  (str "https://wex.nz/api/3/" (name (:curr api)) "/" (name endpt)))
+  ([endpt]
+   (str "https://wex.nz/api/3/" (name endpt))) 
+  ([api endpt]
+   (str "https://wex.nz/api/3/" (name (:curr api)) "/" (name endpt))))
 
 (defn- get-body-sync [url]
-  (json/read-str (:body @(http/get url {:timout 2000})) :key-fn keyword))
+  (json/read-str (:body @(http/get url {:timeout 2000})) :key-fn keyword))
 
 ;(throw (Throwable. (str "Request for " url " Failed.")))
 (defn get-body-async [url]
@@ -43,10 +45,15 @@
   ([api] (get-body-sync (public-api api :trades)))
   ([api async] (get-body-async (public-api api :trades))))
 
-(defn get-fee
-  ([] (get-fee default-api))
-  ([api] (get-body-sync (public-api api :fee)))
-  ([api async] (get-body-async (public-api api :fee))))
+(defn get-info
+  ([] (get-body-sync (public-api :info)))
+  ([async] (get-body-sync (public-api :info))))
+
+;; Deprecated - use get-info instead
+;;(defn get-fee
+;;  ([] (get-fee default-api))
+;;  ([api] (get-body-sync (public-api api :fee)))
+;;  ([api async] (get-body-async (public-api api :fee))))
 
 (defn get-depth
   ([] (get-depth default-api))
@@ -64,9 +71,10 @@
   ([] (get-trades-async default-api))
   ([api] (get-body-async (public-api api :trades))))
 
-(defn get-fee-async
-  ([] (get-fee-async default-api))
-  ([api] (get-body-async (public-api api :fee))))
+;; Deprecated - use get-info instead
+;; (defn get-fee-async
+;;   ([] (get-fee-async default-api))
+;;   ([api] (get-body-async (public-api api :fee))))
 
 (defn get-depth-async
   ([] (get-depth-async default-api))
