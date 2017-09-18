@@ -1,6 +1,6 @@
 # btc-e-client
 
-A small client for interacting with the btc-e api. Works for the public and
+A small client for interacting with the wex (formerly btc-e) api. Works for the public and
 trading api.
 
 ## Usage
