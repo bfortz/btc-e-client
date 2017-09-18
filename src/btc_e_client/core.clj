@@ -1,5 +1,5 @@
 (ns btc-e-client.core
-  "Client library for accessing the btc-e api.
+  "Client library for accessing the wex (formerly btc-e) api.
   Needs your secret and key inside environment variables called BTC_KEY and BTC_SECRET"
   (:use pandect.core)
   (:require [clojure.data.json :as json]
@@ -16,11 +16,11 @@
 
 (def default-api (init :btc_usd "" ""))
 
-(def endpoint "https://btc-e.com/tapi")
+(def endpoint "https://wex.nz/tapi")
 
 (defn- public-api
   [api endpt]
-  (str "https://btc-e.com/api/2/" (name (:curr api)) "/" (name endpt)))
+  (str "https://wex.nz/api/3/" (name (:curr api)) "/" (name endpt)))
 
 (defn- get-body-sync [url]
   (json/read-str (:body @(http/get url {:timout 2000})) :key-fn keyword))
@@ -81,7 +81,7 @@
 ;; sign : the HMAC sig: post data signed by secret using HMAC-SHA512
 
 ;; Endpoint
-;; https://btc-e.com/tapi
+;; https://wex.nz/tapi
 
 ;; POST Data
 ;; nonce : a nonce, using the unix ts in ms
@@ -138,7 +138,7 @@
   (btce/get-trades) ;; get the trades
 
   ;; The trade api's method names and params can be found at
-  ;; https://btc-e.com/api/documentation
+  ;; https://wex.nz/api/documentation
   ;;
   ;; trade-api-request and async-trade-api-request must take in an api, since
   ;; they need the api key/secret
