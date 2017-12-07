@@ -4,6 +4,7 @@
   (:use pandect.algo.sha512)
   (:require [clojure.data.json :as json]
             [org.httpkit.client :as http]
+            [clojure.string :as s]
             [clojure.walk]))
 
 (defn init
@@ -98,10 +99,14 @@
 ;; param2 : val2
 ;; ...
 
+(defn remove-zeros
+  [x]
+  (if (s/ends-with? x "0") (remove-zeros (subs x 0 (dec (count x)))) x))
+  
 (defn mystr
   "Make sure clojure does not switch to E notation"
   [x]
-  (if (number? x) (format "%.4f" x) x))
+  (if (number? x) (remove-zeros (format "%f" x)) x))
 
 (defn- postage
   "Creates a post body"
