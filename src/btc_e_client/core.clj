@@ -101,7 +101,7 @@
 (defn mystr
   "Make sure clojure does not switch to E notation"
   [x]
-  (if (number? x) (format "%f" x) x))
+  (if (number? x) (format "%.4f" x) x))
 
 (defn- postage
   "Creates a post body"
