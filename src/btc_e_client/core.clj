@@ -100,8 +100,13 @@
 ;; ...
 
 (defn remove-zeros
+  "Remove trailing zeros except after a dot"
   [x]
-  (if (s/ends-with? x "0") (remove-zeros (subs x 0 (dec (count x)))) x))
+  (if (s/ends-with? x ".0") 
+    x
+    (if (s/ends-with? x "0") 
+      (recur (subs x 0 (dec (count x)))) 
+      x)))
   
 (defn mystr
   "Make sure clojure does not switch to E notation"
