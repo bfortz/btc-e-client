@@ -98,12 +98,17 @@
 ;; param2 : val2
 ;; ...
 
+(defn mystr
+  "Make sure clojure does not switch to E notation"
+  [x]
+  (if (number? x) (format "%f" x) x))
+
 (defn- postage
   "Creates a post body"
   [param-map]
   (->> param-map
        (clojure.walk/stringify-keys)
-       (reduce #(str %1 "&" (first %2) "=" (second %2)) "")
+       (reduce #(str %1 "&" (first %2) "=" (mystr (second %2))) "")
        (#(subs % 1)))) ;; Get rid of the first "&" in "&param1=stuff"
 
 (defn- btc-e-request-raw [api post-data]
