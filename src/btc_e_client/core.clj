@@ -17,13 +17,13 @@
 
 (def default-api (init :btc_usd "" ""))
 
-(def endpoint "https://wex.link/tapi")
+(def endpoint "https://wex.fit/tapi")
 
 (defn- public-api
   ([endpt]
-   (str "https://wex.link/api/3/" (name endpt))) 
+   (str "https://wex.fit/api/3/" (name endpt))) 
   ([api endpt]
-   (str "https://wex.link/api/3/" (name endpt) "/" (name (:curr api)))))
+   (str "https://wex.fit/api/3/" (name endpt) "/" (name (:curr api)))))
 
 (defn- get-body-sync [url]
   (json/read-str (:body @(http/get url {:timeout 2000})) :key-fn keyword))
@@ -90,7 +90,7 @@
 ;; sign : the HMAC sig: post data signed by secret using HMAC-SHA512
 
 ;; Endpoint
-;; https://wex.link/tapi
+;; https://wex.fit/tapi
 
 ;; POST Data
 ;; nonce : a nonce, using the unix ts in ms
@@ -161,7 +161,7 @@
   (btce/get-trades) ;; get the trades
 
   ;; The trade api's method names and params can be found at
-  ;; https://wex.link/api/documentation
+  ;; https://wex.fit/api/documentation
   ;;
   ;; trade-api-request and async-trade-api-request must take in an api, since
   ;; they need the api key/secret
